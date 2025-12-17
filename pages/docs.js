@@ -11,6 +11,11 @@ export default function Docs() {
                         <CardTitle>API Documentation</CardTitle>
                     </CardHeader>
                     <CardContent className="prose prose-slate max-w-none">
+                        <div className="bg-slate-900 text-slate-300 p-4 rounded-lg mb-6">
+                            <p className="text-sm font-mono mb-1">Base URL:</p>
+                            <code className="text-green-400 font-bold">https://api-drmbox.mkstore.id</code>
+                        </div>
+
                         <h3>Authentication</h3>
                         <p>All API requests must include the <code>x-api-key</code> header.</p>
 
