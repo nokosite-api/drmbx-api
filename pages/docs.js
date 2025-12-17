@@ -1,0 +1,33 @@
+import Navbar from '@/components/Navbar';
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+export default function Docs() {
+    return (
+        <div className="min-h-screen bg-slate-50 font-sans">
+            <Navbar />
+            <main className="max-w-4xl mx-auto p-6 space-y-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>API Documentation</CardTitle>
+                    </CardHeader>
+                    <CardContent className="prose prose-slate max-w-none">
+                        <h3>Authentication</h3>
+                        <p>All API requests must include the <code>x-api-key</code> header.</p>
+
+                        <h3>Endpoints</h3>
+                        <ul>
+                            <li>
+                                <strong>GET /api/search</strong> - Search for dramas
+                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs">GET /api/search?q=Love&lang=en</pre>
+                            </li>
+                            <li>
+                                <strong>GET /api/home</strong> - Get homepage data
+                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs">GET /api/home?lang=in</pre>
+                            </li>
+                        </ul>
+                    </CardContent>
+                </Card>
+            </main>
+        </div>
+    );
+}
