@@ -24,6 +24,14 @@ export default function Docs() {
                                 <strong>GET /api/home</strong> - Get homepage data
                                 <pre className="bg-slate-100 p-2 rounded mt-2 text-xs">GET /api/home?lang=in</pre>
                             </li>
+                            <li>
+                                <strong>GET /api/movie</strong> - Get movie details & chapters
+                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs">GET /api/movie?id=42000000577&slug=the-lost-heir&lang=en</pre>
+                            </li>
+                            <li>
+                                <strong>GET /api/genre</strong> - Get movies by genre
+                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs">GET /api/genre?id=260&lang=en</pre>
+                            </li>
                         </ul>
                     </CardContent>
                 </Card>
