@@ -20,6 +20,7 @@ export default async function handler(req, res) {
     const { lang = 'en' } = req.query;
     let path = `${lang}.json`;
     if (lang === 'en') path = 'index.json';
+    if (lang === 'id') path = 'in.json'; // Map 'id' to 'in' (Indonesian)
 
     try {
         const targetUrl = `${BASE_URL}/_next/data/${buildId}/${path}`;
