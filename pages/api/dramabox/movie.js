@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { fetchBuildId, checkAuthorization, BASE_URL, HEADERS } = require('../../lib/dramabox');
+const { fetchBuildId, checkAuthorization, BASE_URL, HEADERS } = require('../../../lib/dramabox');
 
 export default async function handler(req, res) {
     // 1. Auth Check

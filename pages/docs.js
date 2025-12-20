@@ -22,20 +22,20 @@ export default function Docs() {
                         <h3 className="text-lg font-bold text-slate-800 border-b pb-2 mb-4">📺 Dramabox Endpoints</h3>
                         <ul className="space-y-4 mb-8">
                             <li>
-                                <strong>GET /api/search</strong> - Search for dramas
-                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs font-mono text-slate-600">GET /api/search?q=Love&lang=en</pre>
+                                <strong>GET /api/dramabox/search</strong> - Search for dramas
+                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs font-mono text-slate-600">GET /api/dramabox/search?q=Love&lang=en</pre>
                             </li>
                             <li>
-                                <strong>GET /api/home</strong> - Get homepage data
-                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs font-mono text-slate-600">GET /api/home?lang=in</pre>
+                                <strong>GET /api/dramabox/home</strong> - Get homepage data
+                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs font-mono text-slate-600">GET /api/dramabox/home?lang=in</pre>
                             </li>
                             <li>
-                                <strong>GET /api/movie</strong> - Get movie details & chapters
-                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs font-mono text-slate-600">GET /api/movie?id=42000000577&slug=the-lost-heir&lang=en</pre>
+                                <strong>GET /api/dramabox/movie</strong> - Get movie details & chapters
+                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs font-mono text-slate-600">GET /api/dramabox/movie?id=42000000577&slug=the-lost-heir&lang=en</pre>
                             </li>
                             <li>
-                                <strong>GET /api/genre</strong> - Get movies by genre
-                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs font-mono text-slate-600">GET /api/genre?id=260&lang=en</pre>
+                                <strong>GET /api/dramabox/genre</strong> - Get movies by genre
+                                <pre className="bg-slate-100 p-2 rounded mt-2 text-xs font-mono text-slate-600">GET /api/dramabox/genre?id=260&lang=en</pre>
                             </li>
                         </ul>
 
