@@ -33,6 +33,13 @@ async function testEndpoints() {
                 // Log top-level keys
                 console.log("PageProps Keys:", Object.keys(movieData.pageProps));
 
+                if (movieData.pageProps.chapterList && movieData.pageProps.chapterList.length > 0) {
+                    console.log("Found Chapters:", movieData.pageProps.chapterList.length);
+                    console.log("Sample Chapter Data:", JSON.stringify(movieData.pageProps.chapterList[0], null, 2));
+                } else {
+                    console.log("No chapters found in response.");
+                }
+
                 // If there's a 'data' key, log its keys or a sample
                 if (movieData.pageProps.data) {
                     console.log("Data Keys:", Object.keys(movieData.pageProps.data));

@@ -1,0 +1,88 @@
+{
+    "info": {
+        "_postman_id": "dramabox-nodejs-api",
+        "name": "Dramabox Node.js API (Vercel)",
+        "description": "Collection for the Node.js Vercel API. No complex scripts needed!",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Search Drama",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{api_secret}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/search?q=CEO&lang=in",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "search"
+                    ],
+                    "query": [
+                        {
+                            "key": "q",
+                            "value": "CEO",
+                            "description": "Search Query"
+                        },
+                        {
+                            "key": "lang",
+                            "value": "in",
+                            "description": "Language Code (in, en, etc)"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Homepage",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{api_secret}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/api/home?lang=in",
+                    "host": [
+                        "{{base_url}}"
+                    ],
+                    "path": [
+                        "api",
+                        "home"
+                    ],
+                    "query": [
+                        {
+                            "key": "lang",
+                            "value": "in"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000",
+            "type": "string"
+        },
+        {
+            "key": "api_secret",
+            "value": "rahasia123",
+            "type": "string"
+        }
+    ]
+}

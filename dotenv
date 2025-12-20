@@ -1,0 +1,15 @@
+# Local Environment Variables
+# Rename this file to .env and fill in the values
+
+# 1. Fallback Secret (For local testing without Supabase)
+API_SECRET=
+
+# 2. Supabase Configuration (Optional - for Database Auth)
+# Get these from Supabase Dashboard -> Settings -> API
+SUPABASE_URL=https://dqwjfvstpjlogngpssjr.supabase.co
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxd2pmdnN0cGpsb2duZ3Bzc2pyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5NTA4NTEsImV4cCI6MjA4MTUyNjg1MX0.KMFZWehbuXz_2J7sggWm3vF5xY5WRHhCN6JtkTi8GEw
+
+# 3. Admin Panel Configuration
+ADMIN_PASSWORD=HeisyaKanoko2007
+# Get this from Supabase -> Settings -> API -> service_role (secret)
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxd2pmdnN0cGpsb2duZ3Bzc2pyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NTk1MDg1MSwiZXhwIjoyMDgxNTI2ODUxfQ.B2WkBm8iwk7JkVvRsajHfSP53IBVFslX8dYUWySar2A
