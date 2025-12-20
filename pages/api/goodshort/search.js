@@ -1,0 +1,26 @@
+const { searchGoodshort } = require('../../../lib/goodshort');
+const { checkAuthorization } = require('../../../lib/dramabox');
+
+export default async function handler(req, res) {
+    const auth = await checkAuthorization(req);
+    if (!auth.valid) {
+        return res.status(401).json({ error: "Unauthorized", message: auth.error });
+    }
+
+    const { q } = req.query;
+    if (!q) {
+        return res.status(400).json({ error: "Missing query parameter 'q'" });
+    }
+
+    try {
+        const rawData = await searchGoodshort(q);
+
+        return res.status(200).json({
+            status: "success",
+            source: "goodshort",
+            data: rawData
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Scraping Error", details: error.message });
+    }
+}
