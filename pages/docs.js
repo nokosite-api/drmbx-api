@@ -13,7 +13,7 @@ export default function Docs() {
                     <CardContent className="prose prose-slate max-w-none">
                         <div className="bg-slate-900 text-slate-300 p-4 rounded-lg mb-6">
                             <p className="text-sm font-mono mb-1">Base URL:</p>
-                            <code className="text-green-400 font-bold">https://api-drmbox.mkstore.id</code>
+                            <code className="text-green-400 font-bold">https://api-dramabox.mkstore.id</code>
                         </div>
 
                         <h3>Authentication</h3>
