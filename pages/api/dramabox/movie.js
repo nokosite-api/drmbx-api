@@ -8,6 +8,11 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Unauthorized", message: auth.error });
     }
 
+    const { checkScope } = require('../../../lib/dramabox');
+    if (!checkScope(auth, 'dramabox')) {
+        return res.status(403).json({ error: "Forbidden", message: "Key does not have 'dramabox' permission" });
+    }
+
     // 2. Validate Inputs
     const { id, slug, lang = 'en' } = req.query;
     if (!id) {

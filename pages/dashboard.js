@@ -22,6 +22,7 @@ import Navbar from '@/components/Navbar';
 export default function Dashboard() {
     const [keys, setKeys] = useState([]);
     const [owner, setOwner] = useState('');
+    const [permissions, setPermissions] = useState(['dramabox', 'goodshort']);
     const [isCreating, setIsCreating] = useState(false);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
@@ -77,12 +78,13 @@ export default function Dashboard() {
                 'Content-Type': 'application/json',
                 'x-admin-password': password
             },
-            body: JSON.stringify({ owner, key: newKey })
+            body: JSON.stringify({ owner, key: newKey, permissions })
         });
 
         setIsCreating(false);
         if (res.ok) {
             setOwner('');
+            setPermissions(['dramabox', 'goodshort']);
             fetchKeys();
             toast.success("API Key berhasil dibuat!");
         } else {
@@ -139,6 +141,35 @@ export default function Dashboard() {
                                     required
                                 />
                             </div>
+                            <div className="flex-1 space-y-2">
+                                <label className="text-sm font-medium">Access Scope</label>
+                                <div className="flex gap-4 pt-2">
+                                    <label className="flex items-center gap-2 text-sm cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={permissions.includes('dramabox')}
+                                            onChange={(e) => {
+                                                if (e.target.checked) setPermissions([...permissions, 'dramabox']);
+                                                else setPermissions(permissions.filter(p => p !== 'dramabox'));
+                                            }}
+                                            className="accent-slate-900"
+                                        />
+                                        Dramabox
+                                    </label>
+                                    <label className="flex items-center gap-2 text-sm cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={permissions.includes('goodshort')}
+                                            onChange={(e) => {
+                                                if (e.target.checked) setPermissions([...permissions, 'goodshort']);
+                                                else setPermissions(permissions.filter(p => p !== 'goodshort'));
+                                            }}
+                                            className="accent-slate-900"
+                                        />
+                                        Goodshort
+                                    </label>
+                                </div>
+                            </div>
                             <Button type="submit" disabled={isCreating} className="w-40">
                                 {isCreating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
                                 {isCreating ? "Generating" : "Generate Key"}
@@ -164,6 +195,7 @@ export default function Dashboard() {
                                     <TableRow>
                                         <TableHead>Owner</TableHead>
                                         <TableHead>API Key</TableHead>
+                                        <TableHead>Permissions</TableHead>
                                         <TableHead>Created At</TableHead>
                                         <TableHead className="text-right">Action</TableHead>
                                     </TableRow>
@@ -181,6 +213,18 @@ export default function Dashboard() {
                                                         onClick={() => copyToClipboard(k.key)}
                                                     />
                                                 </code>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex gap-1 flex-wrap">
+                                                    {(k.permissions || []).map(p => (
+                                                        <span key={p} className="text-[10px] px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-full border border-blue-100 font-medium uppercase tracking-tighter">
+                                                            {p}
+                                                        </span>
+                                                    ))}
+                                                    {(!k.permissions || k.permissions.length === 0) && (
+                                                        <span className="text-[10px] px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded-full border">ALL (Legacy)</span>
+                                                    )}
+                                                </div>
                                             </TableCell>
                                             <TableCell className="text-slate-500">
                                                 {new Date(k.created_at).toLocaleDateString("id-ID", {

@@ -8,6 +8,11 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Unauthorized", message: auth.error });
     }
 
+    const { checkScope } = require('../../../lib/dramabox');
+    if (!checkScope(auth, 'dramabox')) {
+        return res.status(403).json({ error: "Forbidden", message: "Key does not have 'dramabox' permission" });
+    }
+
     // 2. Build ID
     const buildId = await fetchBuildId();
     if (!buildId) return res.status(500).json({ error: "Failed to retrieve Build ID" });

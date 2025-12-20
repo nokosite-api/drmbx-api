@@ -7,6 +7,11 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Unauthorized", message: auth.error });
     }
 
+    const { checkScope } = require('../../../lib/dramabox');
+    if (!checkScope(auth, 'goodshort')) {
+        return res.status(403).json({ error: "Forbidden", message: "Key does not have 'goodshort' permission" });
+    }
+
     const { q } = req.query;
     if (!q) {
         return res.status(400).json({ error: "Missing query parameter 'q'" });

@@ -28,10 +28,15 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-        const { owner, key } = req.body;
+        const { owner, key, permissions } = req.body;
         const { data, error } = await supabaseAdmin
             .from('api_keys')
-            .insert([{ owner, key, is_active: true }])
+            .insert([{
+                owner,
+                key,
+                is_active: true,
+                permissions: permissions || ['dramabox', 'goodshort'] // Default to all if missing
+            }])
             .select();
 
         if (error) return res.status(500).json({ error: error.message });
