@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         return res.status(403).json({ error: "Forbidden", message: "Key does not have 'goodshort' permission" });
     }
 
-    const { id, path } = req.query;
+    const { id, path, lang } = req.query;
     const identifier = path || id;
 
     if (!identifier) {
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const rawData = await getGoodshortMovie(identifier);
+        const rawData = await getGoodshortMovie(identifier, lang);
 
         // Normalize for frontend compatibility (Dramabox uses chapterList, Goodshort uses chapterVoList)
         const normalizedData = {

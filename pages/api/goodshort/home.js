@@ -14,7 +14,8 @@ export default async function handler(req, res) {
     }
 
     try {
-        const rawData = await getGoodshortHome();
+        const { lang } = req.query;
+        const rawData = await getGoodshortHome(lang);
 
         // Normalization attempt (optional, based on finding similar structures)
         // Goodshort usually has 'bookList' or similar in HomeModule

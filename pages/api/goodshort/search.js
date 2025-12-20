@@ -13,17 +13,16 @@ export default async function handler(req, res) {
     }
 
     const { q } = req.query;
-    if (!q) {
-        return res.status(400).json({ error: "Missing query parameter 'q'" });
-    }
+    if (!q) return res.status(400).json({ error: "Missing 'q' parameter" });
+    const { lang } = req.query;
 
     try {
-        const rawData = await searchGoodshort(q);
+        const rawResult = await searchGoodshort(q, lang);
 
         return res.status(200).json({
             status: "success",
             source: "goodshort",
-            data: rawData
+            data: rawResult
         });
     } catch (error) {
         return res.status(500).json({ error: "Scraping Error", details: error.message });
