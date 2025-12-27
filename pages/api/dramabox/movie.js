@@ -39,9 +39,9 @@ export default async function handler(req, res) {
         const chapterList = items.map(ep => {
             const videoUrl = extractVideoUrl(ep);
             return {
-                id: ep.id,
-                name: ep.title || ep.name,
-                index: ep.appIndex || ep.index,
+                id: ep.chapterId || ep.id,
+                name: ep.chapterName || ep.title || ep.name,
+                index: (typeof ep.chapterIndex === 'number') ? ep.chapterIndex : (ep.appIndex || ep.index),
                 // Crucial: Frontend uses this prop
                 mp4: videoUrl || "",
                 // Also provide modern props just in case
