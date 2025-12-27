@@ -36,8 +36,11 @@ export default async function handler(req, res) {
     // Let's default to a placeholder if missing, though it might 404.
     const urlSlug = slug || 'unknown';
 
+    // DB uses 'in' for 'id'
+    const dbLang = lang === 'id' ? 'in' : lang;
+
     try {
-        const targetUrl = `${BASE_URL}/_next/data/${buildId}/${lang}/movie/${id}/${urlSlug}.json`;
+        const targetUrl = `${BASE_URL}/_next/data/${buildId}/${dbLang}/movie/${id}/${urlSlug}.json`;
         const apiRes = await axios.get(targetUrl, { headers: HEADERS, timeout: 10000 });
 
         return res.status(200).json({

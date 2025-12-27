@@ -20,8 +20,11 @@ export default async function handler(req, res) {
     const { q, lang = 'en' } = req.query;
     if (!q) return res.status(400).json({ error: "Missing 'q' parameter" });
 
+    // DB uses 'in' for 'id'
+    const dbLang = lang === 'id' ? 'in' : lang;
+
     try {
-        const targetUrl = `${BASE_URL}/_next/data/${buildId}/${lang}/search.json`;
+        const targetUrl = `${BASE_URL}/_next/data/${buildId}/${dbLang}/search.json`;
         const apiRes = await axios.get(targetUrl, {
             headers: HEADERS,
             params: { searchValue: q },
