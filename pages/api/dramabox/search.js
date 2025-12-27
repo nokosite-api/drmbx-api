@@ -1,5 +1,7 @@
 const axios = require('axios');
-const { fetchBuildId, checkAuthorization, BASE_URL, HEADERS } = require('../../../lib/dramabox');
+const { checkAuthorization } = require('../../../lib/dramabox');
+
+const SANSEKAI_API = "https://dramabox.sansekai.my.id/api/dramabox";
 
 export default async function handler(req, res) {
     // 1. Auth Check
@@ -13,32 +15,35 @@ export default async function handler(req, res) {
         return res.status(403).json({ error: "Forbidden", message: "Key does not have 'dramabox' permission" });
     }
 
-    // 2. Build ID
-    const buildId = await fetchBuildId();
-    if (!buildId) return res.status(500).json({ error: "Failed to retrieve Build ID" });
-
-    const { q, lang = 'en' } = req.query;
+    const { q } = req.query;
     if (!q) return res.status(400).json({ error: "Missing 'q' parameter" });
 
-    // DB uses 'in' for 'id'
-    const dbLang = lang === 'id' ? 'in' : lang;
-
     try {
-        const targetUrl = `${BASE_URL}/_next/data/${buildId}/${dbLang}/search.json`;
+        // Use Sansekai API
+        const targetUrl = `${SANSEKAI_API}/search`;
         const apiRes = await axios.get(targetUrl, {
-            headers: HEADERS,
-            params: { searchValue: q },
+            params: { query: q },
             timeout: 15000
         });
 
-        const bookList = apiRes.data.pageProps?.bookList || [];
+        // Sansekai returns array directly
+        const items = apiRes.data || [];
+
+        // Map to standard format
+        const results = items.map(item => ({
+            bookId: item.bookId || item.id,
+            bookName: item.bookName || item.title,
+            cover: item.cover,
+            introduction: item.introduction
+        }));
+
         return res.status(200).json({
             status: "success",
-            lang,
-            count: bookList.length,
-            results: bookList
+            count: results.length,
+            results: results
         });
     } catch (error) {
+        console.error("Sansekai Search Error:", error.message);
         return res.status(500).json({ error: "Upstream Error", details: error.message });
     }
 }

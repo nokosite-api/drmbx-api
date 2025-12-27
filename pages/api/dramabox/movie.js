@@ -1,5 +1,7 @@
 const axios = require('axios');
-const { fetchBuildId, checkAuthorization, BASE_URL, HEADERS } = require('../../../lib/dramabox');
+const { checkAuthorization } = require('../../../lib/dramabox');
+
+const SANSEKAI_API = "https://dramabox.sansekai.my.id/api/dramabox";
 
 export default async function handler(req, res) {
     // 1. Auth Check
@@ -14,44 +16,71 @@ export default async function handler(req, res) {
     }
 
     // 2. Validate Inputs
-    const { id, slug, lang = 'en' } = req.query;
+    const { id } = req.query;
     if (!id) {
         return res.status(400).json({ error: "Missing required parameter: id" });
     }
 
-    // 3. Build ID
-    const buildId = await fetchBuildId();
-    if (!buildId) return res.status(500).json({ error: "Failed to retrieve Build ID" });
-
-    // 4. Construct URL
-    // Pattern: /_next/data/{buildId}/{lang}/movie/{id}/{slug}.json
-    // If slug is missing, we might try to guess or use a default, 
-    // but usually the API needs the exact slug or at least *some* slug. 
-    // Based on research, the slug is part of the URL structure.
-    // If the user doesn't provide a slug, we might need to handle it or error out. 
-    // For now, let's assume if slug is missing, we try without it or use a placeholder if the server accepts it, 
-    // or just fail. Tests showed the URL *includes* the slug.
-
-    // However, usually Next.js data files NEED the full path. 
-    // Let's default to a placeholder if missing, though it might 404.
-    const urlSlug = slug || 'unknown';
-
-    // DB uses 'in' for 'id'
-    const dbLang = lang === 'id' ? 'in' : lang;
-
     try {
-        const targetUrl = `${BASE_URL}/_next/data/${buildId}/${dbLang}/movie/${id}/${urlSlug}.json`;
-        const apiRes = await axios.get(targetUrl, { headers: HEADERS, timeout: 10000 });
+        // Use Sansekai API
+        const targetUrl = `${SANSEKAI_API}/allepisode`;
+        const apiRes = await axios.get(targetUrl, {
+            params: { bookId: id },
+            timeout: 15000
+        });
+
+        // Sansekai returns array of episodes
+        const items = apiRes.data || [];
+
+        // Map to structure compatible with Frontend 'api.ts'
+        // Frontend expects: json.data.chapterList (array)
+        // Each chapter needs: id, name, index, mp4
+
+        const chapterList = items.map(ep => {
+            const videoUrl = extractVideoUrl(ep);
+            return {
+                id: ep.id,
+                name: ep.title || ep.name,
+                index: ep.appIndex || ep.index,
+                // Crucial: Frontend uses this prop
+                mp4: videoUrl || "",
+                // Also provide modern props just in case
+                cdnList: ep.cdnList
+            };
+        });
 
         return res.status(200).json({
             status: "success",
-            data: apiRes.data.pageProps || {}
+            // Wrap in pageProps structure for compatibility
+            data: {
+                chapterList: chapterList,
+                bookInfo: {
+                    bookId: id,
+                    // We might not have bookName here unless we fetch details too, 
+                    // but Frontend usually passes title from search.
+                }
+            }
         });
+
     } catch (error) {
-        // If 404, it might mean the slug was wrong or ID is invalid.
+        console.error("Sansekai Movie Error:", error.message);
         if (error.response && error.response.status === 404) {
-            return res.status(404).json({ error: "Movie not found", details: "Check ID and Slug match" });
+            return res.status(404).json({ error: "Movie not found", details: "ID not found upstream" });
         }
         return res.status(500).json({ error: "Upstream Error", details: error.message });
     }
+}
+
+function extractVideoUrl(ep) {
+    if (!ep.cdnList || ep.cdnList.length === 0) return null;
+
+    // Iterate over CDN providers
+    for (const cdn of ep.cdnList) {
+        if (cdn.videoPathList && cdn.videoPathList.length > 0) {
+            // Sort by quality (descending) or pick default
+            const sorted = cdn.videoPathList.sort((a, b) => b.quality - a.quality);
+            return sorted[0].videoPath;
+        }
+    }
+    return null;
 }
